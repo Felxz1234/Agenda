@@ -3,7 +3,7 @@ import './styles.css'
 import './styles-priority.css'
 import api from "../../services/api";
 
-function Notes({data}){
+function Notes({data , handleDelete , hangleChangePriority}){
 
 
     const [changedNote,setChangedNote] = useState('')
@@ -35,7 +35,7 @@ function Notes({data}){
         <li className={data.priority? "notepad-infos-priority":"notepad-infos"}>
             <div>
                 <strong>{data.title}</strong>
-                    <div>
+                    <div onClick={()=>handleDelete(data._id)}>
                     x
                     </div>
                 </div>
@@ -45,7 +45,8 @@ function Notes({data}){
                 onBlur={e=>handleSave(e.target,data.notes)}
                 defaultValue={data.notes}>
                 </textarea>
-            <span>!</span>
+            <span onClick={()=> hangleChangePriority(data._id)}>
+            !</span>
         </li>
     )
 }

@@ -36,10 +36,10 @@ module.exports = {
         const annotationDeleted = await Annotations.findOneAndDelete({_id:id});
 
         if(annotationDeleted){
-            return response.json(annotationDeleted)
+            return res.json(annotationDeleted)
         }
 
-        return req.status(401).json({error:"não foi encontrato o registro para deletar"})
+        return res.status(401).json({error:"não foi encontrato o registro para deletar"})
 
     }
 

@@ -2,36 +2,35 @@ import React from 'react'
 import Radio from '@mui/material/Radio';
 import './style.css'
 
-function RadioButton(){
-    const [selectedValue, setSelectedValue] = React.useState('a');
+function RadioButton({selectedValue,handleChange}){
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setSelectedValue(event.target.value);
+  // };
 
   return (
     <div className='RadioOptions'>
       <Radio
-        checked={selectedValue === 'a'}
-        onChange={handleChange}
-        value="a"
+        checked={selectedValue === 'all'}
+        onChange={e=>handleChange(e.target)}
+        value="all"
         name="radio-buttons"
         inputProps={{ 'aria-label': 'A' }}
       />
       <span>Todos</span>
       <Radio
         size='small'
-        checked={selectedValue === 'b'}
-        onChange={handleChange}
-        value="b"
+        checked={selectedValue === 'true'}
+        onChange={e=>handleChange(e.target)}
+        value="true"
         name="radio-buttons"
         inputProps={{ 'aria-label': 'B' }}
       />
       <span>prioridades</span>
       <Radio
-        checked={selectedValue === 'c'}
-        onChange={handleChange}
-        value="c"
+        checked={selectedValue === 'false'}
+        onChange={e=>handleChange(e.target)}
+        value="false"
         name="radio-buttons"
         inputProps={{ 'aria-label': 'C' }}
       />

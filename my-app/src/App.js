@@ -12,21 +12,63 @@ import RadioButton from "./Components/RadionButton";
 
 function App() {
 
+  const [selectedValue, setSelectedValue] = useState('all');
  
   const [title,setTitles] = useState('')
   const [notes,setNotes] = useState('')
   const [allNotes,setAllNotes] = useState([])
 
   useEffect(()=>{
-    async function getAllNotes(){
-      
-      const response = await api.get('/buscar',)
-      setAllNotes(response.data)
-
-    }
     getAllNotes()
   },[])
 
+  async function getAllNotes(){
+      
+    const response = await api.get('/buscar')
+    setAllNotes(response.data)
+
+  }
+
+ async function loadNotes(option){
+    const params = {priority:option};
+    const response = await api.get('/priorities',{params})
+
+    if(response){
+      setAllNotes(response.data)
+    }
+
+  }
+
+  function handleChange(e){
+    setSelectedValue(e.value);
+
+    if(e.checked && e.value !== 'all'){
+      loadNotes(e.value);
+    }else{
+      getAllNotes();
+    }
+
+  }
+
+  async function handleDelete(id){
+    const deletedNote = await api.delete(`/annotations/${id}`)
+
+    if(deletedNote){
+      setAllNotes(allNotes.filter(note => note._id !== id))
+    }
+
+   }
+
+   async function hangleChangePriority(id){
+     const  note = await api.post(`priorities/${id}`)
+
+     if(note && selectedValue !== 'all'){
+        loadNotes(selectedValue)
+     }else if(note){
+      getAllNotes();
+     }
+
+   }
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -40,7 +82,13 @@ function App() {
     setTitles('')
     setNotes('')
 
-    setAllNotes([...allNotes,response.data])
+    if(selectedValue !== 'all'){
+      getAllNotes();
+    }else{
+      setAllNotes([...allNotes,response.data])
+    }
+
+    setSelectedValue('all')   
 
   }
 
@@ -83,12 +131,15 @@ function App() {
              <button id="btn_submit" type="submit">salvar</button>
 
          </form>
-         <RadioButton></RadioButton>
+         <RadioButton
+         selectedValue={selectedValue}
+         handleChange={handleChange}
+         ></RadioButton>
        </aside>
        <main>
           <ul>
             {allNotes.map(data=>(
-               <Notes data={data}/>
+               <Notes  hangleChangePriority={ hangleChangePriority} handleDelete ={handleDelete} key={data.id} data={data}/>
             ))}
            
           </ul>
