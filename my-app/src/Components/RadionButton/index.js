@@ -4,10 +4,6 @@ import './style.css'
 
 function RadioButton({selectedValue,handleChange}){
 
-  // const handleChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
-
   return (
     <div className='RadioOptions'>
       <Radio
